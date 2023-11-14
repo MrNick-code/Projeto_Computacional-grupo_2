@@ -28,5 +28,3 @@ https://www.geeksforgeeks.org/blockchain-elliptic-curve-cryptography/
 Próximos passo em EEC:
 
 '''
-
-##### Teste de commit usando Branch!
