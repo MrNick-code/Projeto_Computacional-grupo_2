@@ -1,0 +1,75 @@
+                Criptografia e Segurança de Redes - Willian Stallins
+
+        I - Introdução
+
+    A arquitetura de segurança IOS
+i. Ataque à segurança: qualquer ação que comprometa a segurança da informação.
+ii. Mecanismo de segurança: processo projetado para detectar, impedir ou permitir recuperação de um ataque.
+iii. Serviço de segurança: processamento ou comunicação que aumenta a segurança de sistemas de dados e informação.
+    Criptografia --> garantir a confidencialidade do sistema (dos dados)
+
+    Mecanismos de segurança específicos
+i. Cifragem (confidencialidade)
+ii. Assinatura digital (integridade)
+iii. Troca de Informações de autenticação (irretratabilidade)
+
+    Modelo para segurança de rede
+envia(mensagem) > info secreta() > mensagem secreta > Cana de informação*¹ > mensagem secreta > info secreta() > recebe(mensagem)
+*¹ - oponente que pode ser uma ameaça passiva (ler...) ou uma ameaça ativa (editar...)
+
+        II - Técnicas Clássicas de Criptografia
+
+criptografia simétrica era a única até 1970.
+insight - "criptoanálise das cífras do módulo?"
+
+    Modelo
+Plaintext --> Algorítimo de criptografia --> secret key --> algorítimo de descriptografia*²
+insight -->  "como manter a secret key segura?"
+*² - plaintext = texto original | ciphertext = texto criptografado | secret key = chave secreta.
+
+Y = E(k, x), em que Y ~ ciphertext | k ~ secret key | x ~ plaintext
+x = D(k, Y)
+Um oponente que sabe Y quer K, ou X ou ambos tendo E e D. Ou seja, ele tem os métodos que foram utilizados, porém não não aces-
+ so à chave.
+emissor e receptor com mesma chave ~ cripto simétrica
+emissor e receptor com chave diferente ~ cripto assimétrica
+
+    Esquema de criptografia computacionalmente segura
+i. Valor para quebrar a cifra maior que valor da informação: Vqc > Vin
+ii. tempo para quebrar a cifra maior que tempo de vida desta: tqc > tv
+Ao menos 1 precisa ser atendido pra ser considerando computacionalmente seguro.
+
+    Parametro para tamanho da secret key:
+Bits        chaves      tempo de quebra
+32          2^32        35,8 minutos
+56          2^56        1142 anos
+128         2^128       10^24 anos
+
+        III - Cífras de Bloco
+
+Cifra de Bloco: bloco de plaintext é tratado como um todo e o ciphertext terá o mesmo tamanho.
+
+        IV - Corpos Finitos (teoria, completamente fodase, matemática pura)
+
+É aplica em AES e ECC. (complexo, aritmética modular, GF(2^n))
+
+        V - AES
+
+Estrutura muito complexa comparada ao DES, foi aceito como padrão pelo NIST em 2001. Tem 3 alternativas de tamanho de chave, sendo
+ elas 128 (a mais usual), 192 ou 256, porém bloco é limitado à 128 bits.
+
+        VI - Mais Sobre Cifras Simétricas
+
+    Criptografia múltipla 
+pega a ciphertext e usa como novo input da cífra.
+
+    Modo de Operação
+Aprimorar ou adaptar uma certa cifra de bloco para certa aplicação em questão (vide, block chain)
+
+        VII - confidencialidade Usando Criptografia Simétrica
+
+    Distribuição de chaves
+As 2 partes, e apenas as 2, precisam compartilhar uma secret key
+
+    Centro de distribuição de chaves
+comunicação entre os sistemas com uma session key que são transmitidas criptografadas por uma master key
