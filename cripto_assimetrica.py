@@ -55,7 +55,7 @@ if valid == True:
 	print(f'\033[1;32m{valid}\033[m')
 if not valid == True:
 	raise Exception('A chave privada não pertence ao usuário dessa chave pública!')
-print('-=-' * 5)
+print('-=-' * 20)
 # ---------------===============-----------------================-----------------=============-------------
 
 # Criptografia direta usando El Gamal
@@ -106,8 +106,9 @@ class ECCCipher(object):
 		for i in range(0, len(msg)):
 			en_msg.append(msg[i])
 	
-		print("\033[37;1mUsando g^k:\033[m ", p)
-		print("\033[31;1mUsando g^ak:\033[m ", s)
+		print("\033[37;1mUsando g^k:\033[m", p)
+		print("\033[31;1mUsando g^ak:\033[m", s)
+		print(f'private key (emissor): {k}')
 		for i in range(0, len(en_msg)):
 			en_msg[i] = s * ord(en_msg[i])
 	
@@ -124,20 +125,21 @@ class ECCCipher(object):
 
 	def ElGamal(self, msg):
 	
-		print("\033[34;1mMensagem Original:\033[m ", msg)
+		print("\033[34;1mMensagem clara:\033[m", msg)
 	
 		q = random.randint(pow(10, 20), pow(10, 50))
 		g = random.randint(2, q)
 	
 		key = self.gen_key(q) # chave privada para quem recebe
 		h = self.power(g, key, q)
-		print("\033[35;1mUsando g:\033[m ", g)
-		print("\033[36;1mUsando g^a:\033[m ", h)
+		print("\033[35;1mUsando g:\033[m", g)
+		print("\033[36;1mUsando g^a:\033[m", h)
 	
 		en_msg, p = self.encrypt(msg, q, h, g)
 		dr_msg = self.decrypt(en_msg, p, key, q)
 		dmsg = ''.join(dr_msg)
-		print("\033[33;1mMensagem Decriptografada:\033[m ", dmsg)
+		print(f'private key (receptor): {key}')
+		print("\033[33;1mMensagem descriptografada:\033[m", dmsg)
 
 
 '''
@@ -150,4 +152,5 @@ if __name__ == '__main__':
 	
 	ecc1 = ECCCipher(2, 10)
 	ECCaply = ecc1.ElGamal(mensagem)
+	print('-=-'*20)
 	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-

@@ -100,13 +100,16 @@ sem pycrypto - ???
 if __name__ == '__main__':
     # AES teste:
 
-    chave = '123'
+    chave = 'Yy3W5Xs4SwDXrMsF19nwwq'
     mensagem = 'Hello World'
 
     aes1 = AESCipher(chave)
     crpt = aes1.encrypt(mensagem)
     Icrpt = aes1.decrypt(crpt)
-    print(f'\033[34;1mMensagem Original:\033[m {mensagem}')
+    print('-=-'*10)
+    print(f'Key: {chave}')
+    print(f'\033[34;1mMensagem clara:\033[m {mensagem}')
     print(f'\033[35;1mMensagem criptografada com AES:\033[m {crpt}')
     print(f'\033[36;1mMensagem após descriptografia:\033[m {Icrpt}')
+    print('-=-'*10)
     # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-
