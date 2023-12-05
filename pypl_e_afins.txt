@@ -1,0 +1,48 @@
+- ambiente virtual
+$ python -m venv venv
+$ .\venv\Scripts\activate
+
+- pacotes para documentação
+$ pip install cookiecutter
+$ pip install poetry
+
+- template
+$ cookiecutter https://github.com/py-pkgs/py-pkgs-cookiecutter.git
+Cuidado ao nomear, se ja existir, vai dar caquinha!
+Ir para a pasta criada pelo template ($ cd path)
+
+- organização de código: usar o git 
+
+- teste
+$ poetry install
+$ python
+$ from simplecalcdoctest.filename import funcname
+$ quit()
+
+- dependencias de pacotes 
+$ poetry add pacoteX
+pyproject.toml da pra ver as dependencias e restrições (tem o ^ nas restrições (pra n ferrar versão))
+
+- documentação 
+☻🤣☻•○😒👌
+algum comando de jupyter, perdi
+$ jupyter notebook
+Usar doc strings
+    breve discrição | parametros (com o tipo) | retorno
+
+- gerar documentação
+$ poetry add --group mist-nb .......
+$ poetry add --group dev sphinx .......
+$ cd docs
+$ .\make.bat html (linux --> bake)
+Nova pasta _build para verificar as documentações e tudo mais!
+
+- pypl + readthedocs
+readthedocs.yml ???
+
+- add a project (no github): Seleciona o repositório em interesse
+- criar API token
+$ poetry build 
+
+$ poetry config pypi-token.pypi 'token'
+$ poetry publish
