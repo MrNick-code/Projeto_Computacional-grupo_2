@@ -13,11 +13,6 @@
     <td>enzobenko@usp.br</td>
   </tr>
   <tr>
-    <td>Lucas R. R. de Almeida</td>
-    <td>12686190</td>
-    <td>lribeirodealmeida@usp.br</td>
-  </tr>
-  <tr>
     <td>Matheus Capelin</td>
     <td>13835990</td>
     <td>matheus.capelin@usp.br</td>
