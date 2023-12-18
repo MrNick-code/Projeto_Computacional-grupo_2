@@ -4,7 +4,6 @@ import numpy as np
 
 # Cifra de César
 # Altera a letra do alfabeto pulando n letras da sequencia
-# Problemas conhecidos: decriptografar caracteres especiais
 # Fonte: https://wiki.imesec.ime.usp.br/books/criptografia/page/cifra-de-césar
 
 @staticmethod
@@ -20,8 +19,19 @@ def cesar(texto, s=13):
             resultado += chr((ord(char) + s - 65) % 26 + 65)
 
         # Encriptografa caracteres minúsculos
-        else:
+        elif char.islower():
             resultado += chr((ord(char) + s - 97) % 26 + 97)
+            
+        # Encrpiptografa caracteres especiais
+        else:
+            if ord(char) >= 98:
+                resultado += chr(ord(char)+ s)
+            
+            elif ord(char) <= 64:
+                resultado += chr((ord(char)+ s) % 65)
+            
+            elif ord(char) >= 91 and ord(char) <=96 :
+                resultado += chr((ord(char)+ s - 91) % 6 + 91)
 
     return resultado
 
@@ -38,8 +48,19 @@ def de_cesar(texto, s=13):
             resultado += chr((ord(char) - s - 65) % 26 + 65)
 
         # Descriptografa caracteres minusculo
-        else:
+        if char.islower():
             resultado += chr((ord(char) - s - 97) % 26 + 97)
+
+        # Descrpiptografa caracteres especiais
+        else:
+            if ord(char) >= 98:
+                resultado += chr(ord(char)- s)
+            
+            elif ord(char) <= 64:
+                resultado += chr((ord(char)- s) % 65)
+            
+            elif ord(char) >= 91 and ord(char) <=96 :
+                resultado += chr((ord(char)- s - 91) % 6 + 91)
 
     return resultado
 
@@ -80,25 +101,40 @@ def de_atbash(texto_cifrado):
 
 # Cifra de Transposição
 # A mensagem é escrita horizontalmente numa matriz de largura fixa e a saída é o texto lido verticalmente nessa matriz. Numa transposição colunar simples essa leitura é feita pelas colunas da esquerda para direita
-# Problemas Conhecidos:
-# implementar palavra chave (len define n, cada letra define a ordem das coluna)
 # Fonte: https://wiki.imesec.ime.usp.br/books/criptografia/page/cifras-de-transposição
 
 @staticmethod
-def transpColumn(texto, n=3):
+def transpColumn(texto, key='abc'):
     cifrado=""
+    b=''
+    n=len(key)
     aux=int(len(texto)/n + 1)
     aux= aux, n
     Matriz = np.zeros(aux)
     count=0
+    countkey=1
+    auxkey= 1, n
+    keyaux= np.zeros(auxkey)
 
     for i in range(aux[0]):
         for j in range(n):
             if count < len(texto):
                 Matriz[i][j]=ord(texto[count])
                 count +=1
+    
+    if key.isalpha()==True:
+        key.upper()
+   
+    for i in range(len(key)):
+        b = min(key)
+        a = key.find(b)
+        keyaux[0][i]= a
+        key = key.replace(b, chr(231), 1)
+        countkey+=1
+    
     for i in range(n):
-        aux2=Matriz[:,i]
+        c = int(keyaux[0][i])
+        aux2=Matriz[:, c]
         for j in range(len(aux2)):
             if int(aux2[j])!=0:
                 cifrado += chr(int(aux2[j]))
@@ -106,29 +142,46 @@ def transpColumn(texto, n=3):
     return cifrado
 
 @staticmethod
-def de_transpColumn(texto,n=3):
+def de_transpColumn(texto, key='abc'):
     cifrado=""
+    n=len(key)
     aux=int(len(texto)/n + 1)
     aux= aux, n
     Matriz = np.zeros(aux)
     count=0
+    countkey=1
+    auxkey= 1, n
+    keyaux= np.zeros(auxkey)
+
+    if key.isalpha()==True:
+        key.upper()
+   
+    for i in range(len(key)):
+        b = min(key)
+        a = key.find(b)
+        keyaux[0][i]= a
+        key = key.replace(b, chr(231), 1)
+        countkey+=1
     
     for i in range(n):
         for j in range(aux[0]):
+            if j == aux[0]-1 and c>len(texto) % n -1:
+                continue
             if count < len(texto):
-                Matriz[j][i]=ord(texto[count])
+                c = int(keyaux[0][i])
+                Matriz[j][c]=ord(texto[count])
                 count +=1
+    
     for i in range(aux[0]):
         aux2=Matriz[i,:]
         for j in range(len(aux2)):
             if int(aux2[j])!=0:
                 cifrado += chr(int(aux2[j]))
-
+    
     return cifrado
 
 # Cifra de Vigenère
 # É uma cifra polialfabetica que consiste basicamente em pegar uma palavra-chave e aplicar a cifra de César várias vezes, de acordo com os caracteres da palavra-chave.
-# Problemas conhecidos: Caracteres especiais devido a heredietaridade com Cesar
 # Fonte: https://wiki.imesec.ime.usp.br/books/criptografia/page/cifra-de-vigenère
 
 def vigenere(texto, chave='demar'):
@@ -165,3 +218,24 @@ def de_vigenere(texto, chave='demar'):
         cifrado += char
 
     return cifrado
+
+'''
+og='Hello World'
+cesr=cesar(og,3)
+atbas=atbash(og)
+TranC= transpColumn(og, "demar")
+vig=vigenere(og)
+
+print('==============================================================')
+print(f'\033[35;1mKey:\033[m demar')
+print(f'\033[36;1mTexto Original:\033[m {og}')
+print(f'\033[35;1mTexto Criptogrado com César (n=3):\033[m {cesr}')
+print(f'\033[35;1mTexto Criptogrado com AtBash:\033[m {atbas}')
+print(f'\033[35;1mTexto Criptogrado com Transposição de Coluna (n=3):\033[m {TranC}')
+print(f'\033[35;1mTexto Criptogrado com Vigenère:\033[m {vig}')
+print(f'\033[36;1mTexto Descriptogrado com César:\033[m {de_cesar(cesr,3)}')
+print(f'\033[36;1mTexto Descriptogrado com AtBash:\033[m {de_atbash(atbas)}')
+print(f'\033[36;1mTexto Descriptogrado com Transposição de Coluna:\033[m {de_transpColumn(TranC,"demar")}')
+print(f'\033[36;1mTexto Descriptogrado com Vigenère:\033[m {de_vigenere(vig)}')
+print('==============================================================')
+'''
