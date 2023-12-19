@@ -83,12 +83,12 @@ def decipher_archive(full_path, key, mode='cesar', name='plaintext'):
     
     return
 
+'''
 path = r"C:\Users\enzob\OneDrive\Área de Trabalho\teste.txt"
 cipher_archive(path, 1)
 path2 =r"C:\Users\enzob\Projeto_Computacional-grupo_2\ciphertext"
 decipher_archive(path2, 1)
 
-'''
 # encrypt_archive cria um arquivo criptogrado com base em um algoritmo de criptografia moderna e uma chave relacionada
 def encrypt_archive(full_path, key, mode='OTP', encoding='utf-8'):
      if isinstance(key, bytes) == False:
