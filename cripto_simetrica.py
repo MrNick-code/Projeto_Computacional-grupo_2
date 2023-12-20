@@ -85,7 +85,10 @@ class AESCipher(object):
         '''
         Basicamente, volta todos os passos da função encrypt. Ao final, removemos o __pad usando o __unpad
         '''
-        encrypted_text = b64decode(encrypted_text)
+        try:
+            encrypted_text = b64decode(encrypted_text)
+        except:
+            raise Exception("Can't decode this information.")
         iv = encrypted_text[:self.block_size]
         cipher = AES.new(self.key, AES.MODE_CBC, iv)
         plain_text = cipher.decrypt(encrypted_text[self.block_size:]).decode("utf-8")
@@ -112,4 +115,6 @@ if __name__ == '__main__':
     print(f'\033[35;1mMensagem criptografada com AES:\033[m {crpt}')
     print(f'\033[36;1mMensagem após descriptografia:\033[m {Icrpt}')
     print('-=-'*10)
+    crpt2 = AESCipher(chave).encrypt(mensagem)
+    print(crpt2)
     # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-
