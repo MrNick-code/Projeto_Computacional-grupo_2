@@ -103,8 +103,8 @@ class ECCCipher(object):
 		s = self.power(h, k, q)
 		p = self.power(g, k, q)
 		
-		for i in range(0, len(msg)):
-			en_msg.append(msg[i])
+		for i in range(0, len(str(msg))):
+			en_msg.append(str(msg)[i])
 	
 		print("\033[37;1mUsando g^k:\033[m", p)
 		print("\033[31;1mUsando g^ak:\033[m", s)
@@ -148,7 +148,7 @@ Próximos passo em EEC: ???
 
 if __name__ == '__main__':
 	# ECC tester
-	mensagem = 'Method KISS slaps'
+	mensagem = 1234.132124
 	
 	ecc1 = ECCCipher(2, 10)
 	ECCaply = ecc1.ElGamal(mensagem)

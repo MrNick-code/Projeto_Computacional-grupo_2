@@ -44,10 +44,10 @@ class AESCipher(object):
         ascii_string vai gerar esse "caractere de preenchimento"  e então adicionando padding_str ao fim do texto, tempos 
         o múltiplo que era necessário.
         '''
-        number_of_bytes_to_pad = self.block_size - len(plain_text) % self.block_size
+        number_of_bytes_to_pad = self.block_size - len(str(plain_text)) % self.block_size
         ascii_string = chr(number_of_bytes_to_pad)
         padding_str = number_of_bytes_to_pad * ascii_string
-        padded_plain_text = plain_text + padding_str
+        padded_plain_text = str(plain_text) + padding_str
         return padded_plain_text
 
 
@@ -57,7 +57,7 @@ class AESCipher(object):
         Contrariamente ao método __pad, identifica esse último caractere do __pad e armazena em bytrse_to_remove para 
         remove-los do plain_text
         '''
-        last_character = plain_text[len(plain_text) - 1:]
+        last_character = plain_text[len(str(plain_text)) - 1:]
         bytes_to_remove = ord(last_character)
         return plain_text[:-bytes_to_remove]
 
@@ -101,7 +101,7 @@ if __name__ == '__main__':
     # AES teste:
 
     chave = 'Yy3W5Xs4SwDXrMsF19nwwq'
-    mensagem = 'Hello World'
+    mensagem = 2452.62365
 
     aes1 = AESCipher(chave)
     crpt = aes1.encrypt(mensagem)
