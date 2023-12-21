@@ -1,4 +1,4 @@
-import cifras_functions as cifra
+import Old_Codes.cifras_functions as cifra
 
 # cipher_archive cria um arquivo com os conteúdos criptogrados com base em uma cifra de criptografia clássica
 # Como a natureza das cifras é de informação do Unicode, é implementado apenas para arquivos .txt
