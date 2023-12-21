@@ -13,6 +13,10 @@ plaintext plano são permutados, também de acordo com uma regra, gerando o plai
 
 @staticmethod
 def cesar(plaintext, s=13):
+    """
+    Cifra um texto conforme a cifra de Cesar.
+    A codificação padrão em mente foi a utf-8.
+    """
     ciphertext = ""
 
     # Passa pelo plaintext
@@ -42,6 +46,10 @@ def cesar(plaintext, s=13):
 
 @staticmethod
 def de_cesar(ciphertext, s=13):
+    """
+    Decifra um texto conforme a cifra de Cesar.
+    A codificação padrão em mente foi a utf-8.
+    """
     plaintext = ""
 
     # Passa pelo ciphertext
@@ -76,6 +84,10 @@ def de_cesar(ciphertext, s=13):
 
 @staticmethod
 def atbash(plaintext):
+    """
+    Cifra um texto conforme a cifra Atbash.
+    A codificação padrão em mente foi a utf-8.
+    """
     ciphertext = ""
 
     for i in range(len(plaintext)):
@@ -91,6 +103,10 @@ def atbash(plaintext):
 
 @staticmethod
 def de_atbash(ciphertext):
+    """
+    Decifra um texto conforme a cifra Atbash.
+    A codificação padrão em mente foi a utf-8.
+    """
     plaintext = ""
 
     for i in range(len(ciphertext)):
@@ -110,6 +126,10 @@ def de_atbash(ciphertext):
 
 @staticmethod
 def transpColumn(plaintext, key='abc'):
+    """
+    Cifra um texto conforme a cifra de Transposição de Coluna.
+    A codificação padrão em mente foi a utf-8.
+    """
     ciphertext=""
     b=''
     n=len(key)
@@ -148,6 +168,10 @@ def transpColumn(plaintext, key='abc'):
 
 @staticmethod
 def de_transpColumn(plaintext, key='abc'):
+    """
+    Decifra um texto conforme a cifra de Transposição de Coluna.
+    A codificação padrão em mente foi a utf-8.
+    """
     ciphertext=""
     n=len(key)
     aux=int(len(plaintext)/n + 1)
@@ -191,6 +215,10 @@ def de_transpColumn(plaintext, key='abc'):
 
 @staticmethod
 def vigenere(plaintext, chave='demar'):
+    """
+    Cifra um texto conforme a cifra de Vigenere.
+    A codificação padrão em mente foi a utf-8.
+    """
     ciphertext=""
     numchave=[]
     count=0
@@ -209,6 +237,10 @@ def vigenere(plaintext, chave='demar'):
 
 @staticmethod
 def de_vigenere(plaintext, chave='demar'):
+    """
+    Decifra um texto conforme a cifra de Vigenere.
+    A codificação padrão em mente foi a utf-8.
+    """
     ciphertext=''
     numchave=[]
     count=0
@@ -257,13 +289,22 @@ trata da segurança da informação que essas sequencias de bits carregam.
 # em modelos de bytes
 @staticmethod
 def onetimepad(plaintext, key, encoding='utf-8'):
+    """
+    Criptografa bytes conforme o algoritmo OneTimePad.
+    """
     ciphertext=bytes()
     
     if isinstance(plaintext, bytes) == False:
-        plaintext=bytes(plaintext, encoding)
+        if isinstance(plaintext, str) == True:
+            plaintext=bytes(plaintext, encoding)
+        else:
+            plaintext=bytes(str(plaintext), encoding)
     
     if isinstance(key, bytes) == False:
-        key=bytes(key, encoding)
+        if isinstance(key, str) == True:
+            key=bytes(key, encoding)
+        else:
+            key=bytes(str(key), encoding)
     
     while len(key) <= len(plaintext):
         key += key
@@ -276,6 +317,9 @@ def onetimepad(plaintext, key, encoding='utf-8'):
 
 @staticmethod
 def de_onetimepad(ciphertext, key, encoding='utf-8'):
+    """
+    Descriptografa bytes conforme o algoritmo OneTimePad.
+    """
     return onetimepad(ciphertext, key, encoding)
 
 '''
