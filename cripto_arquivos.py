@@ -1,9 +1,12 @@
-import random
 import cifras_functions as cifra
 
 # cipher_archive cria um arquivo com os conteúdos criptogrados com base em uma cifra de criptografia clássica
 # Como a natureza das cifras é de informação do Unicode, é implementado apenas para arquivos .txt
 def cipher_archive(key, full_path=str, method='cesar', name='ciphertext'):
+    """
+    Cria um arquivo com os conteúdos textuais de outro arquivo cifrados.
+    As cifras implementadas funcionam em codificação utf-8 e são Cesar, Atbash, Transposição de Coluna e Vigenere.
+    """
     
     valid = {'cesar', 'atbash', 'tcolumn', 'vigenere'}
     if method not in valid:
@@ -50,6 +53,10 @@ def cipher_archive(key, full_path=str, method='cesar', name='ciphertext'):
 # decipher_archive cria um arquivo com os conteúdos descriptogrados com base em uma cifra de criptografia clássica e uma chave
 # Como a natureza das cifras é de informação do Unicode, é implementado apenas para arquivos .txt
 def decipher_archive(key, full_path=str, method='cesar', name='plaintext'):
+    """
+    Cria um arquivo com os conteúdos textuais de outro arquivo decifrados.
+    As cifras implementadas funcionam em codificação utf-8 e são Cesar, Atbash, Transposição de Coluna e Vigenere.
+    """
 
     valid = {'cesar', 'atbash', 'tcolumn', 'vigenere'}
     if method not in valid:
@@ -95,6 +102,12 @@ def decipher_archive(key, full_path=str, method='cesar', name='plaintext'):
 
 # encrypt_archive cria um arquivo criptogrado com base em um algoritmo de criptografia moderna e uma chave relacionada
 def encrypt_archive(key, full_path=str, method='OTP', name='encryptdata', encoding='utf-8'):
+    """
+    Cria um arquivo com as informações de outro arquivo criptografadas.
+    Os algoritmos implementados funcionam alterando bytes e o arquivo criptografado pode não ser possível de abrir.
+    Os algoritmos são OneTimePad.
+    """
+    
     valid = {'OTP', 'AES', 'EEC'}
     if method not in valid:
         raise ValueError("Error: method must be one of %r." % valid)
@@ -129,6 +142,10 @@ def encrypt_archive(key, full_path=str, method='OTP', name='encryptdata', encodi
 
 # decrypt_archive cria um arquivo descriptogrado com base em um algoritmo de criptografia moderna e uma chave relacionada
 def decrypt_archive(key, full_path=str, method='OTP', name='plaindata', encoding='utf-8'):
+    """
+    Cria um arquivo com as informações de outro arquivo descriptografadas.
+    Os algoritmos são OneTimePad.
+    """
     
     valid = {'OTP', 'AES', 'EEC'}
     if method not in valid:
