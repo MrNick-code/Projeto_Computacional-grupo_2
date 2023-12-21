@@ -260,10 +260,16 @@ def onetimepad(plaintext, key, encoding='utf-8'):
     ciphertext=bytes()
     
     if isinstance(plaintext, bytes) == False:
-        plaintext=bytes(plaintext, encoding)
+        if isinstance(plaintext, str) == True:
+            plaintext=bytes(plaintext, encoding)
+        else:
+            plaintext=bytes(str(plaintext), encoding)
     
     if isinstance(key, bytes) == False:
-        key=bytes(key, encoding)
+        if isinstance(key, str) == True:
+            key=bytes(key, encoding)
+        else:
+            key=bytes(str(key), encoding)
     
     while len(key) <= len(plaintext):
         key += key
