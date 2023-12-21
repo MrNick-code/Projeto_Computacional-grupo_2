@@ -95,8 +95,18 @@ class ECCCipher(object):
 			b = int(b / 2)
 		return x % c
 	
-	def encrypt(self, msg, q, h, g):
-	
+	def encrypt(self, msg): # (q, g, h) --> public key 
+		
+		q = random.randint(pow(10, 20), pow(10, 50))
+		g = random.randint(2, q)
+		print(f'original text: {msg}')
+		#print(f'q used = {q}')
+		#print(f'g used = {g}')
+		key = self.gen_key(q) # chave privada para quem recebe
+		h = self.power(g, key, q) # g^a
+		#print(f'g^a (h) used = {h}')
+
+
 		en_msg = []
 	
 		k = self.gen_key(q) # chave privada para quem envia
@@ -106,51 +116,35 @@ class ECCCipher(object):
 		for i in range(0, len(str(msg))):
 			en_msg.append(str(msg)[i])
 	
-		print("\033[37;1mUsando g^k:\033[m", p)
-		print("\033[31;1mUsando g^ak:\033[m", s)
+		#print("g^k (p) used =", p)
+		#print("g^ak (s) used =", s)
 		print(f'private key (emissor): {k}')
+		print(f'private key (receptor): {key}')
 		for i in range(0, len(en_msg)):
 			en_msg[i] = s * ord(en_msg[i])
-	
-		return en_msg, p
 
-	def decrypt(self, en_msg, p, key, q):
+		public_key = [p, q]
+		print(f'public key = {public_key}')
+	
+		return en_msg, public_key, key
+
+	def decrypt(self, en_msg, public_key, key):
 	
 		dr_msg = []
-		h = self.power(p, key, q)
+		h = self.power(public_key[0], key, public_key[1]) # p^a = g^(ak)
 		for i in range(0, len(en_msg)):
 			dr_msg.append(chr(int(en_msg[i]/h)))
-			
-		return dr_msg
-
-	def ElGamal(self, msg):
-	
-		print("\033[34;1mMensagem clara:\033[m", msg)
-	
-		q = random.randint(pow(10, 20), pow(10, 50))
-		g = random.randint(2, q)
-	
-		key = self.gen_key(q) # chave privada para quem recebe
-		h = self.power(g, key, q)
-		print("\033[35;1mUsando g:\033[m", g)
-		print("\033[36;1mUsando g^a:\033[m", h)
-	
-		en_msg, p = self.encrypt(msg, q, h, g)
-		dr_msg = self.decrypt(en_msg, p, key, q)
 		dmsg = ''.join(dr_msg)
-		print(f'private key (receptor): {key}')
-		print("\033[33;1mMensagem descriptografada:\033[m", dmsg)
-
-
-'''
-Próximos passo em EEC: ???
-'''
+		return dmsg
 
 if __name__ == '__main__':
 	# ECC tester
 	mensagem = 1234.132124
 	
 	ecc1 = ECCCipher(2, 10)
-	ECCaply = ecc1.ElGamal(mensagem)
+	#ECCaply = ecc1.ElGamal(mensagem)
+	encryption, public_key, key = ecc1.encrypt(mensagem)
+	decryption = ecc1.decrypt(encryption, public_key, key)
 	print('-=-'*20)
+	print(f'mensagem descriptada: {decryption}')
 	# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-

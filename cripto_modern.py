@@ -99,54 +99,61 @@ class ECCCipher(object):
 			b = int(b / 2)
 		return x % c
 	
-	def encrypt(self, msg, q, h, g):
-	
-		en_msg = []
+	def encrypt(self, plain_text):
+		'''
+		Encrypt the plain text using the Elliptic Curve Cryptography
+
+		args:
+			plain_text (str, int, float): text you want to encrypt
+		
+		returns:
+			cipher_text (): crypted text
+			public_key (): the public key for encryption and decryption
+			key_receptor (): the key needed by the receptor generated to decrypt this cipher_text 
+		'''
+		q = random.randint(pow(10, 20), pow(10, 50))
+		g = random.randint(2, q)
+		print(f'original text: {plain_text}')
+		key_receptor = self.gen_key(q) 
+		h = self.power(g, key_receptor, q) 
+
+		cipher_text = []
 	
 		key_sender = self.gen_key(q)
 		s = self.power(h, key_sender, q)
 		p = self.power(g, key_sender, q)
 		
-		for i in range(0, len(str(msg))):
-			en_msg.append(str(msg)[i])
+		for i in range(0, len(str(plain_text))):
+			cipher_text.append(str(plain_text)[i])
 	
-		for i in range(0, len(en_msg)):
-			en_msg[i] = s * ord(en_msg[i])
+		print(f'private key (sender): {key_sender}')
+		print(f'private key (receptor): {key_receptor}')
+		for i in range(0, len(cipher_text)):
+			cipher_text[i] = s * ord(cipher_text[i])
+
+		public_key = [p, q]
+		print(f'public key = {public_key}')
 	
-		return en_msg, p
+		return cipher_text, public_key, key_receptor
 
-	def decrypt(self, en_msg, p, key_reciever, q):
-	
-		dr_msg = []
-		h = self.power(p, key_reciever, q)
-
-		for i in range(0, len(en_msg)):
-			dr_msg.append(chr(int(en_msg[i]/h)))
-			
-		return dr_msg
-
-	def ElGamal(self, plain_text): # dar uma olhada assim que possível: separar encrypt de decrypt? q, g, etc tem que ser os mesmos!
+	def decrypt(self, cipher_text, public_key, key_receptor):
 		'''
-		Encrypt or decript the plain text using the Elliptic Curve Cryptography
-		
+		Decrypt the text that were encrypted using a certain known public key
+
 		args:
-            msg (str, int, float): text you want to either encrypt or decript
+			cipher_text (???): the text that is encrypted
+			public_key (???): the public key generated in the encrypt process of this cipher_text
+			key_receptor (???): your private key
 		
-		returns: 
-            en_msg: cipher text after encryption
-			dmsg (str, int, float): orinal text after decryption
+		returns:
+			plain_text (str, int, float): original text
 		'''
-		q = random.randint(pow(10, 20), pow(10, 50))
-		g = random.randint(2, q)
-		key_reciever = self.gen_key(q)
-		h = self.power(g, key_reciever, q)
-
-		en_msg, p = self.encrypt(plain_text, q, h, g)
-		
-		dr_msg = self.decrypt(en_msg, p, key_reciever, q)
-		dmsg = ''.join(dr_msg)
-
-		return en_msg, dmsg
+		dr_msg = []
+		h = self.power(public_key[0], key_receptor, public_key[1])
+		for i in range(0, len(cipher_text)):
+			dr_msg.append(chr(int(cipher_text[i]/h)))
+		plain_text = ''.join(dr_msg)
+		return plain_text
 
 '''
 How to use:
@@ -154,5 +161,7 @@ crypted_in_AES = AESChiper(key).encrypt(plain_text)
 
 decrypted_in_AES = AESChiper(key).decrypt(chiper_text)
 
-using_ECC = ECCChiper.ElGamal(plain_text)
+crypted_in_ECC = ECCChiper.encrypt(plain_text)
+
+decrypted_in_ECC = ECCChiper.decrypt(cipher_text, public_key, key_receptor)
 '''
